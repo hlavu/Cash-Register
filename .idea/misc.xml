@@ -3,13 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/16477/Desktop/MAP524/a2/app/src/main/res/layout/activity_history_detail.xml" value="0.12760416666666666" />
+        <entry key="..\:/Users/16477/Desktop/MAP524/a2/app/src/main/res/layout/activity_history_detail.xml" value="0.152" />
+        <entry key="..\:/Users/16477/Desktop/MAP524/a2/app/src/main/res/layout/activity_history_list.xml" value="0.12552083333333333" />
         <entry key="..\:/Users/16477/Desktop/MAP524/a2/app/src/main/res/layout/activity_listview.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/16477/Desktop/MAP524/a2/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/Users/16477/Desktop/MAP524/a2/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/16477/Desktop/MAP524/a2/app/src/main/res/layout/activity_manager_layout.xml" value="0.14114583333333333" />
+        <entry key="..\:/Users/16477/Desktop/MAP524/a2/app/src/main/res/layout/activity_recycler_history_list.xml" value="0.16510416666666666" />
         <entry key="..\:/Users/16477/Desktop/MAP524/a2/app/src/main/res/layout/history_detail.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/16477/Desktop/MAP524/a2/app/src/main/res/layout/list_row_item.xml" value="0.264" />
         <entry key="..\:/Users/16477/Desktop/MAP524/a2/app/src/main/res/layout/listview_activity.xml" value="0.1" />
+        <entry key="..\:/Users/16477/Desktop/MAP524/a2/app/src/main/res/layout/recycler_view_list_row.xml" value="0.16510416666666666" />
       </map>
     </option>
   </component>

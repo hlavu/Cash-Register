@@ -4,8 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     TextView displayProductType;
     TextView displayTotal;
     ListView productList;
+
     ArrayList<Product> products;
     ArrayList<History> histories = new ArrayList<History>();
     History history;
@@ -42,10 +45,11 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     ProductAdapter adapter;
     int productQtyLeft;
     double productPrice = 0.00;
+    int currentProduct;
+
     String productName="";
     String qty="";
     String total;
-
 
     AlertDialog.Builder builder;
 
@@ -58,27 +62,30 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         displayTotal = (TextView) findViewById(R.id.total);
         displayProductType = (TextView) findViewById(R.id.productType);
 
-        Product pants = new Product("Pants", 20.44, 10 );
-        Product shoes = new Product("Shoes", 10.44, 100);
-        Product hats = new Product("Hats", 5.90, 30);
-
         products = new ArrayList<Product>(3);
 
-        products.add(pants);
-        products.add(shoes);
-        products.add(hats);
-
         productList = (ListView)findViewById(R.id.list_view);
-        adapter = new ProductAdapter(this, products);
-        productList.setAdapter(adapter);
         builder = new AlertDialog.Builder(this);
 
-
-        if (savedInstanceState == null) {
-            histories = new ArrayList<History>();
+        if (savedInstanceState != null) {
+            productName = savedInstanceState.getString("name");
+            qty = savedInstanceState.getString("qty");
+            total = savedInstanceState.getString("total");
+            productPrice = savedInstanceState.getDouble("price");
+            productQtyLeft = savedInstanceState.getInt("qtyLeft");
+            products = savedInstanceState.getParcelableArrayList("products");
+            histories = savedInstanceState.getParcelableArrayList("histories");
+        } else {
+            Product pants = new Product("Pants", 20.44, 10 );
+            Product shoes = new Product("Shoes", 10.44, 100);
+            Product hats = new Product("Hats", 5.90, 30);
+            products.add(pants);
+            products.add(shoes);
+            products.add(hats);
         }
-        else
-            histories = savedInstanceState.getParcelableArrayList("listofhistories");
+
+        adapter = new ProductAdapter(this, products);
+        productList.setAdapter(adapter);
 
         productList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -87,6 +94,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
                 productQtyLeft = products.get(i).qty;
                 productPrice = products.get(i).price;
                 productName = products.get(i).name;
+                currentProduct = i; // save index of the current Product to change qtyLeft
                 if(!qty.equals("")){
                     total = String.valueOf(Math.round(Integer.parseInt(qty)*productPrice*100.00)/100.00);
                     displayTotal.setText(total);
@@ -134,7 +142,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         } else {
             qty += btn.getText().toString();
             displayQty.setText(qty);
-            if(!productName.equals("")){
+            if(!displayProductType.getText().toString().equals("")){
                 total = String.valueOf(Math.round(Integer.parseInt(qty)*productPrice*100.00)/100.00);
                 displayTotal.setText(total);
             }
@@ -142,7 +150,6 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     }
 
     public void buyBtnClicked(View view) {
-
         if(displayProductType.getText().toString().equals("") || displayQty.getText().toString().equals("")){
             Toast.makeText(this,"All fields are required!!!",Toast.LENGTH_LONG).show();
         }else if(Integer.parseInt(qty) == 0.00){
@@ -152,10 +159,13 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         } else {
             builder.create();
             builder.setTitle("Thank you for your purchase");
+            products.get(currentProduct).qty-= Integer.parseInt(qty);
+            productQtyLeft = products.get(currentProduct).qty;
+            adapter = new ProductAdapter(this, products);
+            productList.setAdapter(adapter);
             builder.setMessage("Your purchase is " + qty + " " + productName + " for " + total);
             builder.show();
-
-            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             Date date = new Date();
             history = new History(productName, qty, total, date.toString());
             histories.add(history);
@@ -166,7 +176,6 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         Intent myIntent = new Intent(this, ManagerLayout.class);
         myIntent.putParcelableArrayListExtra("history", histories);
         startActivity(myIntent);
-
     }
 
     @Override
@@ -197,7 +206,22 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList("listofhistories", histories);
+        outState.putString("name", productName);
+        outState.putString("qty", qty);
+        outState.putString("total", total);
+        outState.putDouble("price", productPrice);
+        outState.putInt("qtyLeft", productQtyLeft);
+        outState.putParcelableArrayList("products", products);
+        outState.putParcelableArrayList("histories", histories);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        displayProductType.setText(savedInstanceState.getString("name"));
+        displayQty.setText(savedInstanceState.getString("qty"));
+        displayTotal.setText(savedInstanceState.getString("total"));
+        products = savedInstanceState.getParcelableArrayList("products");
+        histories = savedInstanceState.getParcelableArrayList("histories");
     }
 
 }

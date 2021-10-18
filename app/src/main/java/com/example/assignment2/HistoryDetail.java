@@ -6,39 +6,30 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 public class HistoryDetail extends AppCompatActivity {
 
-    ListView historyList;
-    HistoryAdapter adapter;
-    ArrayList<History> histories;
+    TextView name;
+    TextView price;
+    TextView date;
+    History history;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history_detail);
-        historyList = (ListView)findViewById(R.id.historyList);
-
-//        if (savedInstanceState == null){
-//            histories = new ArrayList<History>();}
-//        else {
-//            histories = savedInstanceState.getParcelableArrayList("listofhistories");
-//        }
+        name = (TextView) findViewById(R.id.name);
+        price = (TextView) findViewById(R.id.price);
+        date = (TextView) findViewById(R.id.date);
 
         Intent myIntent = getIntent();
-        histories = myIntent.getParcelableArrayListExtra("history");
-        adapter = new HistoryAdapter(this, histories);
-        historyList.setAdapter(adapter);
+        history = myIntent.getParcelableExtra("history");
+        name.setText(String.format("Product: %s", history.name));
+        price.setText(String.format("Price: %s", history.total));
+        date.setText(String.format("Purchase Date: %s", history.date));
 
     }
-
-//    @Override
-//    protected void onSaveInstanceState(@NonNull Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//        outState.putParcelableArrayList("listofhistories", histories);
-//    }
-
-
 }

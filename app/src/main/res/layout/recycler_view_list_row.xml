@@ -16,20 +16,20 @@
         android:textSize="20sp"
         />
 
-       <TextView
-           android:id="@+id/qtyLeft"
-           android:layout_width="110dp"
-           android:layout_height="wrap_content"
-           android:includeFontPadding="false"
-           android:padding="10dp"
-           android:text="@string/_10"
-           android:textSize="20sp"
-           android:textColor="@color/DarkGray"
-           android:layout_toEndOf="@+id/name"/>
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:padding="10dp"
+        android:text="@string/_10"
+        android:textSize="20sp"
+        android:textColor="@color/DarkGray"
+        android:layout_toEndOf="@+id/name"/>
 
 
     <TextView
-        android:id="@+id/price"
+        android:id="@+id/qty"
         android:layout_width="110dp"
         android:layout_height="40dp"
         android:layout_below="@+id/name"
