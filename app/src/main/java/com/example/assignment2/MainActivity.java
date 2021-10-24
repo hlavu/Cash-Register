@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
             total = savedInstanceState.getString("total");
             productPrice = savedInstanceState.getDouble("price");
             productQtyLeft = savedInstanceState.getInt("qtyLeft");
+            currentProduct = savedInstanceState.getInt("currProduct");
             products = savedInstanceState.getParcelableArrayList("products");
             histories = savedInstanceState.getParcelableArrayList("histories");
         } else {
@@ -152,7 +153,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     public void buyBtnClicked(View view) {
         if(displayProductType.getText().toString().equals("") || displayQty.getText().toString().equals("")){
             Toast.makeText(this,"All fields are required!!!",Toast.LENGTH_LONG).show();
-        }else if(Integer.parseInt(qty) == 0.00){
+        }else if(Integer.parseInt(qty) == 0){
             Toast.makeText(this,"Quantity should be more than 0!!!",Toast.LENGTH_LONG).show();
         }else if(Integer.parseInt(qty) > productQtyLeft){
             Toast.makeText(this,"Not enough quantity in the stock!!!",Toast.LENGTH_LONG).show();
@@ -211,6 +212,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         outState.putString("total", total);
         outState.putDouble("price", productPrice);
         outState.putInt("qtyLeft", productQtyLeft);
+        outState.putInt("currProduct", currentProduct);
         outState.putParcelableArrayList("products", products);
         outState.putParcelableArrayList("histories", histories);
     }
